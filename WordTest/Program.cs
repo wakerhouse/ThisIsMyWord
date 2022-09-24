@@ -13,15 +13,19 @@ namespace WordTest
             ThisIsMyWord.WordAutomationLib wordAutomationLib = new ThisIsMyWord.WordAutomationLib();
             FileInfo fi = new FileInfo(Assembly.GetExecutingAssembly().FullName);
             wordAutomationLib.OpenTemplate(fi.DirectoryName + @"\ISO_Vorlage.dotx");
-            wordAutomationLib.AddStartParagraph("Hallo Test");
-            wordAutomationLib.AddEndParagraph("Ende");
+            wordAutomationLib.AddHeaderParagraph("Hallo Test");
             wordAutomationLib.AddParagraph("Table 1");
             string table = "1;2;3;4;5\r\newq;qwe;qwe;qwe;qwe";
-            wordAutomationLib.AddTable(table);
-            wordAutomationLib.Add();
+            var oTable = wordAutomationLib.AddTable(table);
+            wordAutomationLib.TableHeaderFormat(oTable, 0, 3, WdColor.wdColorGray20);
+            wordAutomationLib.AddPicture(fi.DirectoryName + @"\image.jpg");
+            wordAutomationLib.AddMultipleParagraphs("Was geht?", "Haha na klar");
             wordAutomationLib.InsertPageBreak();
-            wordAutomationLib.AddStartParagraph("Hallo Test");
-
+            wordAutomationLib.AddHeaderParagraph("Hallo Test");
+            wordAutomationLib.AddChart(new double[] {3,7,6,3,6,8,2,5}, "Data", "inc", "rnd", 400,200);
+            wordAutomationLib.SaveDocument(@"C:\temp\testZert.docx", WdSaveFormat.wdFormatDocumentDefault);
+            wordAutomationLib.SaveDocument(@"C:\temp\testZert.pdf", WdSaveFormat.wdFormatPDF);
+            wordAutomationLib.CloseDocument(false);
         }
     }
 }
